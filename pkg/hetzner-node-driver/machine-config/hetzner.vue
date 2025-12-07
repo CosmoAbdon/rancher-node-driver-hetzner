@@ -258,7 +258,7 @@ export default defineComponent({
                     />
                 </div>
             </div>
-            <div class="row mt-20 vcenter">
+            <div class="row mt-20">
                 <div class="col span-6">
                     <LabeledSelect
                         v-model:value="serverConfiguration.firewallIds"
