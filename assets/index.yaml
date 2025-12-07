@@ -13,12 +13,12 @@ entries:
       catalog.cattle.io/ui-extensions-version: '>= 3.0.0 < 4.0.0'
     apiVersion: v2
     appVersion: 0.1.0
-    created: "2025-12-07T07:40:32.573837827Z"
+    created: "2025-12-07T08:39:33.979528917Z"
     description: hetzner-node-driver plugin
-    digest: 0cff9450041dc8743896249ec6bc651cc26d54082fb0008e10a65b4fdf3984e1
+    digest: de306e49b30511e5e9878a091b8af11dd759d28020d012d42037646305b04889
     name: hetzner-node-driver
     type: application
     urls:
     - assets/hetzner-node-driver/hetzner-node-driver-0.1.0.tgz
     version: 0.1.0
-generated: "2025-12-07T07:40:32.573218597Z"
+generated: "2025-12-07T08:39:33.979054219Z"
