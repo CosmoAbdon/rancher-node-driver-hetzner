@@ -6,7 +6,6 @@ export interface ServerConfiguration {
     disablePublicIpv6?: boolean;
     usePrivateNetwork?: boolean;
 
-    sshKeyId?: number;
     firewallIds?: number[];
     networkIds?: number[];
     placementGroupId?: number;
@@ -27,7 +26,6 @@ export interface MachineConfigValue {
     placementGroup?: string | number;
     networks?: (string | number)[];
     firewalls?: (string | number)[];
-    existingKeyId?: string | number;
     usePrivateNetwork?: boolean;
     disablePublic?: boolean;
     disablePublicIpv4?: boolean;
@@ -65,7 +63,6 @@ export function useServerConfigSync(
         disablePublicIpv4: false,
         disablePublicIpv6: false,
         usePrivateNetwork: false,
-        sshKeyId: undefined,
         firewallIds: [],
         networkIds: [],
         placementGroupId: undefined,
@@ -137,7 +134,6 @@ export function useServerConfigSync(
 
         value.networks = serverConfiguration.networkIds?.map(id => id?.toString()) || [];
         value.firewalls = serverConfiguration.firewallIds?.map(id => id?.toString()) || [];
-        value.existingKeyId = toStringOrUndefined(serverConfiguration.sshKeyId);
 
         value.usePrivateNetwork = serverConfiguration.usePrivateNetwork;
         if (serverConfiguration.disablePublicNetwork) {
@@ -170,7 +166,6 @@ export function useServerConfigSync(
         serverConfiguration.placementGroupId = toNumberOrUndefined(newValue.placementGroup);
         serverConfiguration.networkIds = toNumberArray(newValue.networks);
         serverConfiguration.firewallIds = toNumberArray(newValue.firewalls);
-        serverConfiguration.sshKeyId = toNumberOrUndefined(newValue.existingKeyId);
 
         serverConfiguration.usePrivateNetwork = newValue.usePrivateNetwork;
         serverConfiguration.disablePublicNetwork = newValue.disablePublic;

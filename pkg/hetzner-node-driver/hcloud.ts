@@ -78,14 +78,6 @@ export class HetznerCloud {
         }));
     }
 
-    public async getSshKeys(): Promise<HetznerOption[]> {
-        const response = await this.request('/ssh_keys?per_page=50');
-        return response.ssh_keys.map((key: any) => ({
-            value: key.id,
-            label: key.name,
-        }));
-    }
-
     private async request(endpoint: string, method: string = 'GET', body?: any): Promise<any> {
         const url = `${this.BASE_URL}${endpoint}`;
         const headers: HeadersInit = {
