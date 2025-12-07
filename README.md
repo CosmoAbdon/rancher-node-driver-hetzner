@@ -25,32 +25,15 @@ This project implements a custom node driver UI extension for Rancher, enabling 
 
 ### 1. Add the node driver
 
-Apply the following YAML configuration to your Rancher cluster:
+Follow the quick setup guide in the driver repository:
+
+👉 **[Rancher Users - Quick Setup](https://github.com/CosmoAbdon/docker-machine-driver-hetzner?tab=readme-ov-file#rancher-users)**
+
+Or apply it directly via kubectl:
 
 ```bash
-kubectl apply -f - <<EOF
-apiVersion: management.cattle.io/v3
-kind: NodeDriver
-metadata:
-  annotations:
-    lifecycle.cattle.io/create.node-driver-controller: "true"
-    privateCredentialFields: apiToken
-  name: hetzner
-spec:
-  active: true
-  addCloudCredential: true
-  builtin: false
-  checksum: "5d6949da9c6f69da82c5010b764326ce2d9e917c16e921541d625b4877376182"
-  description: ""
-  displayName: Hetzner
-  externalId: ""
-  url: https://github.com/CosmoAbdon/docker-machine-driver-hetzner/releases/download/v1.0.0/docker-machine-driver-hetzner_1.0.0_linux_amd64.tar.gz
-  whitelistDomains:
-  - api.hetzner.cloud
-EOF
+kubectl apply -f https://raw.githubusercontent.com/CosmoAbdon/docker-machine-driver-hetzner/master/rancher/node-driver.yaml
 ```
-
-> **Warning:** Do not add the node driver via the Rancher UI. Otherwise the credential annotation is missing, and you will not be able to create cloud credentials for Hetzner.
 
 ### 2. Install the extension
 
@@ -96,7 +79,7 @@ This fork introduces the following improvements:
 ## Troubleshooting
 
 ### Cannot create cloud credentials for Hetzner
-Make sure you applied the node driver via `kubectl` and not through the Rancher UI. The `privateCredentialFields: apiToken` annotation is required.
+Make sure you installed the node driver following the [quick setup guide](https://github.com/CosmoAbdon/docker-machine-driver-hetzner?tab=readme-ov-file#rancher-users). The `privateCredentialFields: apiToken` annotation is required and is only applied when using the YAML method.
 
 ### Server creation fails with SSH key error
 Ensure you're using the [CosmoAbdon/docker-machine-driver-hetzner](https://github.com/CosmoAbdon/docker-machine-driver-hetzner) driver, which handles SSH keys correctly for Rancher environments.
