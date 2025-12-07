@@ -51,3 +51,7 @@ driver:
         userData:
           label: 'User Data'
           description: 'This user data will be merged with the Rancher-injected user data. Use this to add additional cloud-init configuration.'
+          placeholder: |
+            #cloud-config
+            packages:
+              - htop

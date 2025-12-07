@@ -59,6 +59,7 @@ const {
 
 const loadingData = ref(true);
 const initialLoad = ref(true);
+const loadError = ref<string | null>(null);
 const hcloud = ref<HetznerCloud | null>(null);
 
 const isLoading = computed(() => loadingData.value || props.busy);
@@ -67,6 +68,11 @@ const networkValidationError = computed(() => {
     const networkError = getErrorForField('network');
     const networkIdsError = getErrorForField('networkIds');
     return networkError || networkIdsError;
+});
+
+const sshKeyOptions = computed(() => {
+    const noneOption = { value: null, label: 'None (auto-generate)' };
+    return [noneOption, ...(hetznerOptions.value.sshKeys || [])];
 });
 
 watch(
@@ -118,6 +124,7 @@ onMounted(async () => {
         hetznerOptions.value.firewalls = firewalls;
     } catch (error) {
         console.error('Failed to load Hetzner data:', error);
+        loadError.value = error instanceof Error ? error.message : 'Failed to load Hetzner Cloud data. Please check your API token.';
     }
 
     loadingData.value = false;
@@ -137,6 +144,11 @@ export default defineComponent({
 <template>
     <div>
         <Loading v-if="initialLoad" :delayed="true" />
+        <Banner
+            v-if="loadError"
+            color="error"
+            :label="loadError"
+        />
         <div class="hetzner-config">
             <h2 class="mt-20 mb-20">{{ t('driver.hetzner.machine.server.title') }}</h2>
             <div class="row mt-10">
@@ -273,8 +285,7 @@ export default defineComponent({
                 <div class="col span-6">
                     <LabeledSelect
                         v-model:value="serverConfiguration.sshKeyId"
-                        :options="hetznerOptions.sshKeys"
-                        clearable
+                        :options="sshKeyOptions"
                         :disabled="isLoading"
                         :loading="isLoading"
                         :placeholder="t('driver.hetzner.machine.network.sshKey.placeholder')"

@@ -192,6 +192,22 @@ export function useServerConfigSync(
         await nextTick();
     }, { immediate: true, deep: true });
 
+    // Watch for private network changes - clear related options when disabled
+    watch(() => serverConfiguration.usePrivateNetwork, (usePrivate) => {
+        if (!usePrivate && !syncingFromProps.value) {
+            serverConfiguration.disablePublicNetwork = false;
+            serverConfiguration.disablePublicIpv4 = false;
+            serverConfiguration.disablePublicIpv6 = false;
+        }
+    });
+
+    // Watch for network selection - clear options when no networks selected
+    watch(() => serverConfiguration.networkIds, (networkIds) => {
+        if ((!networkIds || networkIds.length === 0) && !syncingFromProps.value) {
+            serverConfiguration.disablePublicNetwork = false;
+        }
+    });
+
     // Watch for local configuration changes
     watch(serverConfiguration, async () => {
         validationErrors.value = validate();
