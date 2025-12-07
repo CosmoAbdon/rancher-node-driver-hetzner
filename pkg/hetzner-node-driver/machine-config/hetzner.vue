@@ -23,6 +23,7 @@ interface HetznerOptions {
     locations: HetznerOption[];
     serverTypes: HetznerOption[];
     serverImages?: HetznerOption[];
+    sshKeys?: HetznerOption[];
     firewalls?: HetznerOption[];
     networks?: HetznerOption[];
     placementGroups?: HetznerOption[];
@@ -42,6 +43,7 @@ const hetznerOptions = ref<HetznerOptions>({
     locations: [],
     serverTypes: [],
     serverImages: [],
+    sshKeys: [],
     firewalls: [],
     networks: [],
     placementGroups: []
@@ -96,6 +98,7 @@ onMounted(async () => {
             serverImages,
             placementGroups,
             networks,
+            sshKeys,
             firewalls
         ] = await Promise.all([
             hcloud.value.getLocations(),
@@ -103,6 +106,7 @@ onMounted(async () => {
             hcloud.value.getImages(),
             hcloud.value.getPlacementGroups(),
             hcloud.value.getNetworks(),
+            hcloud.value.getSshKeys(),
             hcloud.value.getFirewalls()
         ]);
         hetznerOptions.value.locations = locations;
@@ -110,6 +114,7 @@ onMounted(async () => {
         hetznerOptions.value.serverImages = serverImages;
         hetznerOptions.value.placementGroups = placementGroups;
         hetznerOptions.value.networks = networks;
+        hetznerOptions.value.sshKeys = sshKeys;
         hetznerOptions.value.firewalls = firewalls;
     } catch (error) {
         console.error('Failed to load Hetzner data:', error);
@@ -253,8 +258,8 @@ export default defineComponent({
                     />
                 </div>
             </div>
-            <div class="row mt-20">
-                <div class="col span-12">
+            <div class="row mt-20 vcenter">
+                <div class="col span-6">
                     <LabeledSelect
                         v-model:value="serverConfiguration.firewallIds"
                         :options="hetznerOptions.firewalls"
@@ -263,6 +268,17 @@ export default defineComponent({
                         :loading="isLoading"
                         :placeholder="t('driver.hetzner.machine.network.firewalls.placeholder')"
                         :label="t('driver.hetzner.machine.network.firewalls.label')"
+                    />
+                </div>
+                <div class="col span-6">
+                    <LabeledSelect
+                        v-model:value="serverConfiguration.sshKeyId"
+                        :options="hetznerOptions.sshKeys"
+                        clearable
+                        :disabled="isLoading"
+                        :loading="isLoading"
+                        :placeholder="t('driver.hetzner.machine.network.sshKey.placeholder')"
+                        :label="t('driver.hetzner.machine.network.sshKey.label')"
                     />
                 </div>
             </div>
